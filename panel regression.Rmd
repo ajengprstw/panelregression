@@ -1,0 +1,381 @@
+---
+title: "Regression with Panel Data"
+author: "Ajeng Prastiwi"
+date: "`r Sys.Date()`"
+output:
+  rmdformats::readthedown: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r settings-libs, include=FALSE}
+library(dplyr)
+library(lubridate)
+library(plm)
+library(AER)
+library(gplots)
+library(lmtest)
+```
+
+Panel data are also called longitudinal data or cross-sectional time-series data. A panel data set has multiple entities, each of which has repeated measurements at different time periods. Panel data may have individual (group) effect, time effect, or both, which are analyzed by fixed effect and/or random effect models. 
+
+Panel data examples:
+
+- Annual unemployment rates of each state over several years
+
+- Quarterly sales of individual stores over several quarters
+
+- Salary for the same worker, working at several different jobs
+
+Why should we use panel data?
+
+- Controlling for individual heterogeneity
+
+- Panel data give more informative data, more variability, less collinearity among the variables, more degress of freedom and more efficiency
+
+- omitted variable bias 
+
+
+# Advantages of panel data
+
+Panel data, by blending the inter-individual differences and intra-individual dynamics, have several advantages over cross-sectional or time-series data:
+
+- The obvious benefit is in terms of obtaining a large sample, giving more degrees of freedom, more variability, more information and less multicollinearity among the variables. 
+
+- The main advantage of panel data comes from its solution to the difficulties involved in interpreting the regression coefficients in the framework of a cross-section only or time series only regeression
+
+
+# Data Structure
+
+Three types of data: cross section, pooled cross section, and panel. To help you visualize these types of data we'll consider some sample data sets below.
+
+We use the `Grunfeld` datasets from `AER` package. This datasets tell about Grunfeld's Investment Data on 11 large US manufacturing firms over 20 years, for the years 1935-1954. 
+
+```{r}
+data("Grunfeld")
+head(Grunfeld)
+```
+
+This datasets have 20 annual observations on 3 variables for 11 firms, here some description of each feature:
+
+- `invest` : Gross investment, defined as additions to plant and equipment plus maintenance and repairs in millions of dollars deflated by the implicit price deflator of producers' durable equipment (base 1947).
+
+- `value`: Market value of the firm, defined as the price of common shares at December 31 (or, for WH, IBM and CH, the average price of December 31 and January 31 of the following year) times the number of common shares outstanding plus price of preferred shares at December 31 (or average price of December 31 and January 31 of the following year) times number of preferred shares plus total book value of debt at December 31 in millions of dollars deflated by the implicit GNP price deflator (base 1947).
+
+- `capital`: Stock of plant and equipment, defined as the accumulated sum of net additions to plant and equipment deflated by the implicit price deflator for producers' durable equipment (base 1947) minus depreciation allowance deflated by depreciation expense deflator (10 years moving average of wholesale price index of metals and metal products, base 1947).
+
+- `firm`: factor with 11 levels: `General Motors`, `US Steel`, `General Electric`, `Chrysler`, `Atlantic Refining`, `IBM`, `Union Oil`, `Westinghouse`, `Goodyear`, `Diamond Match`, `American Steel`.
+
+- `year`: Year.
+
+## Cross Sectional Data
+
+Cross sectional data is a type of data collected by observing many subjects at the one point or period of time
+
+```{r }
+csd <- Grunfeld %>% 
+  select(-firm) %>% 
+  filter(year == 1954)
+head(csd)
+```
+
+
+## Pooled Cross Sectional Data
+
+Pooled cross sectional data is multiple snapshots of multiple bunches of (randomly selected) individuals (or states or firms or whatever) at many points in time.
+```{r}
+pcs <- Grunfeld%>% 
+  select(-firm)
+head(pcs)
+```
+
+`pcs` is an example of a pooled cross-sectional data set because we have observations with different year. We can use the same notation here as in cross section, indexing each person, firm, city, etc. by $i$. Suppose we have 11 cross sectional datasets from 19 different years, pooling the data means to treat them as one larger sample and control for the fact that some observations are from a different year.
+
+## Panel Data
+
+Panel data have a special structure, each row of the data corresponds to a specific individual and time period. 
+
+```{r}
+head(Grunfeld)
+```
+
+The data set has 11 firms with 220 observation. This particular panel data set is sometimes referenced as a `balanced panel data set` because we observe every single firm has 20 observations.
+
+The equation for model becomes:
+
+$y_{it} = \beta_0+\beta _1x_i+u_{it}$
+
+where :
+
+- $y_{it}$ is the dependent variable
+- $i$ denoting households, individuals, firms, countries, etc. 
+- $t$ denoting time. 
+
+The `i` subscript, therefore, denotes the cross-section dimension whereas `t` denotes the time series dimension. How do we account for the cross section and time heterogeneity in this model? this is done by using a two-way error component assumption for the disturbances, $u_{it}$ with:
+
+$u_{it} = \mu _i+\lambda _t+\upsilon _{it}$
+
+where:
+
+- $\mu _i$ represents the unobservable individual (cross section) heterogeneity
+
+- $\lambda _t$ denotes the unobservable time heterogeneity
+
+- $\upsilon_{it}$ is the remaining random error term
+
+The first two components($\mu _i$ and $\lambda _t$) are also called within component and the last $\upsilon _{it}$, panel or between component
+
+
+# Heterogeniety
+
+```{r}
+plotmeans(formula = invest~year, main = "Heterogeineity Across Year", data = Grunfeld)
+```
+
+
+# Estimation model of panel regression
+
+
+## Pooled Regression
+
+The (pooled) OLS is a pooled linear regression without fixed and random effects. It assumes a constant intercept and slopes regardless of group and time period. We will use the `plm` command with the option `model = "pooling"` to obtain the pooled estimates:
+
+```{r}
+pooling <- plm(invest~value + capital, data = Grunfeld, model = "pooling", index = c("firm","year"))
+summary(pooling)
+```
+
+Three additional arguments are common to these function:
+
+- index: this argument enables the estimation function to identify the structure of the data, the individual and the time period for each observation
+
+- effect: the kind of effects to include in the model, individual effects, time effects, and two-ways
+
+- model: the kind of model to be estimated, most of the time a model with fixed effects or a model with random effects
+
+```{r}
+summary(pooling)
+```
+
+
+## The Fixed Effects Model
+
+Fixed effect model explore the relationship between predictor and outcome variables within and entity (country, person, company, .etc). Each entity has its own individual characteristics that may or may not influence the predictor variables. When using Fixed Effects Model we assume that something within the individual may impact or bias the predictor or outcome variables and we need to control for this. This is the rationale behind the assumption of the correlation between entity's error term and predictor variables. Fixed Effect remove the effect of those time-invariant characteristics so we can assess the net effect of the predictors on the outcome variable. [ Oscar Torres Reyna]
+
+The equation for the fixed effects model becomes:
+
+$ y_{it} = \beta _iX_{it} + \alpha _i + u_{it} $
+
+Where:
+
+- $y_{it}$ is the dependent variable, where i = entity and t = time
+
+- $\beta_i$ is the coefficient for independent variable
+
+- $X_{it}$ represents one independent variable
+
+- $\alpha _i$ that represents a unique value for each individual in the unit individual. it would represent the effect of all characteristics of an individual that do not change over time
+
+- $u_{it}$ is the error term
+
+with $i = 1,...,n$ and $t=1,...,T$. The $\alpha _i$ are entity-specific intercepts that capture heterogeneities across entities. An equivalent representation of this model is given by
+
+$ y_{it} = \beta_0 + \beta _iX_{it} + ...+\beta_kX_{it}+ \gamma _2D2_i+ \gamma _3D3_i +...+\gamma _nDn_i$
+
+where the $\gamma _2D2_i+ \gamma _3D3_i + \gamma _nDn_i$ are dummy variables
+
+There are several strategies for estimating a fixed effect model. 
+
+## Least Square Dummy Variable
+
+The least squares dummy variable model (LSDV) uses dummy variables. These strategies of course, produce the identical parameter estimates of regressor (non dummy independent variables). The between `estimation` fits a model using individual or time means of dependent and independent without dummies.
+
+```{r}
+lsdv <- lm(invest~value + capital + factor(firm), data = Grunfeld)
+summary(lsdv)
+```
+
+
+## Within Estimator
+
+The `within` estimation does not need dummy variables, but it uses deviations from group (or time period) means. That is `within` estimation uses variation within each individual or entity instead of a large number of dummies.
+
+The within estimator substracts these unit-level means from the response, treatment, and all the controls:
+
+$Y_{it}-\bar{Y_i} = (X_{it}-\bar{X_i})'\beta+ (u_{it}-\bar{u_i})$
+
+Also note that since $\bar{Y_i}$ are unit averages, and the unobserved effect is constant over time, substracting off the mean also subtracts that unobserved effect.
+
+The default behavior of `plm` is to introduce individual effects. Using the `effect` argument, one may also introduce:
+
+- individual effects( effect = "individual")
+
+- time effects( effect = "time" )
+
+- individual and time effects ( effect = "twoways" ). The two-ways effect model is for the moment only available for balanced panels
+
+Here's the code using `plm`. Note that in this case, `model = "within"` means fixed effects for the entity variable, firm
+```{r}
+within <- plm(invest~value + capital, data = Grunfeld, model = "within", index = c("firm","year"), effect = "twoways")
+summary(within)
+```
+
+we can get the fixed effects constant for each firm using `fixef()`. The `fixef()` function returns an object of class fixef. 
+```{r}
+fixef(within)
+fixef(within, effect = "time")
+
+```
+A summary method is provided, which prints the effects (in deviation from the overall intercept), their standard error and the test of equality to the overall intercepts.
+```{r}
+summary(fixef(within))
+```
+
+Relationship of type `dmean` and `level` and `overall intercept`
+```{r}
+overall <- within_intercept(within)
+fx_dmean <- fixef(within, type = "dmean") 
+fx_level <- fixef(within, type = "level")
+  
+all.equal(overall + fx_dmean, fx_level, check.attributes = FALSE)
+```
+
+
+Calculation fitted values of two ways within model
+```{r}
+fixefs <- fixef(within)[index(within, which = "id")]
+fitted_by_hand <- fixefs + (within$coefficients["value"] * within$model$value) + (within$coefficients["capital"] * within$model$capital)
+```
+
+
+## The Random Effects Model
+
+In the random effects model, the individual-specific effect is a random variable that is uncorrelated with the explanatory variables.
+
+The equation for the random effects model becomes:
+
+$y_{it} = \beta _iX_{it} + \alpha  +\varepsilon_{it} + u_{it}$
+
+Where:
+- $u_{it}$ is between entity error
+- $\varepsilon_{it}$ is within entity error
+
+```{r}
+random <- plm(invest~value + capital, data = Grunfeld, model = "random", index = c("firm","year"), effect = "twoways")
+summary(random)
+```
+
+For a random model, the `summary` output gives information about the variance of the components of the error.
+
+```{r}
+ranef(random)
+```
+
+
+## Fixed Effect vs Random Effect Models
+
+Panel data models estimate fixed and/or random effects models using dummy variables. The core difference between fixed and random effect models lies in the role of dummies. If dummies are consideres as a part of the intercept, it is a fixed effect model. In a random effect model, the dummies act as an error term.
+
+The fixed effect model examines group difference in intercepts, assuming the same slopes and constant variance across groups. Fixed effect models use Leas Square Dummy Variable (LSDV), within effect, and between effect estimation methods. Thus OLS regression with dummies, in fact, are fixes effect models.
+
+
+## Selection Method of panel regression
+
+
+1. Chow Test for Poolability
+
+Chow test is as test to determine the model of whether Pooled Effect or Fixed Effect (FE) is most appropriately used in estimating panel data. What is poolability? Poolability asks if slopes are the same across group or overtime [^1]
+
+H0: pooled effect model
+
+H1: fixed effect model
+
+```{r}
+pFtest(within,pooling)
+```
+From the result above, we can see the p-value is below 0.05 so a fixed effect model is better for this data
+
+2. Hausman Test
+
+Hausman test is a statistical test to select whether the most appropriate Fixed Effect or Random Effect model is used. The additional arguments is model, the kind of model to be estimated, most of the time a model with fixed effects or a model with random effects.
+
+H0: Random Effect Model
+
+H1: Fixed Effect Model 
+
+```{r}
+phtest(within, random)
+```
+From the result above, the p-value is below 0.05 so a fixed effect model is better for this data
+
+3.  Lagrange Multiplier 
+
+Lagrange Multiplier to determine whether Random Effect (RE) is better than Comman Effect method.
+
+H0: Pooled Effect Model
+
+H1: Random Effect Model
+```{r}
+plmtest(within,effect = "twoways",type = "bp")
+```
+
+From the result above, the p-value is below 0.05 so a random effect model is better for this data
+
+**The test will help you to decide, but your explanation/motivation according to the data structure and research question to use an estimator or another it's a better choice.**
+
+```{r}
+sum(resid(pooling)^2)
+sum(resid(within)^2)
+sum(resid(random)^2)
+```
+
+
+## Diagnostics Test
+
+### Test of Serial Correlation
+
+A genearal testing procedure for serial correlation in Fixed Effects (FE), Random Effects (RE), and pooled Effects models alike can be based on considerations in. (Wooldrige 2002)
+
+Recall that `plm` model objects are the results of OLS estimation performed on `demeaned` data, where, in the case of individual effects (else symmetric), this means time-demeaning for the Fixed Effect model, quasi-time demaning for the Random Effect model and original data with no demeaning at all, for the Pooled Model.
+
+H0: There is not serial correlation
+
+H1: There is serial correlation
+```{r}
+pbgtest(random)
+```
+
+### Testing for Heteroskedasticity
+
+H0: Homoskedasticity
+
+H1: Heteroskedasticity
+```{r}
+bptest(random)
+```
+
+
+
+
+
+
+Annotation:
+
+- Baltagi, Badi H. 2005. Econometric Analysis of Panel Data, 3rd Edition, John Wiley and Sons.
+
+- Hsiao, Cheng. 2014. Analysis of Panel Data. Third edition. Cambridge University Press, New York.
+
+- Kennedy, Peter. 2008. A Guide to Econometrics, 6th ed. Malden, MA: Blackwell Publishing
+
+
+
+
+
+
+
+
+
+
