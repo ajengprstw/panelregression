@@ -287,7 +287,7 @@ The fixed effect model examines group difference in intercepts, assuming the sam
 
 1. Chow Test for Poolability
 
-Chow test is as test to determine the model of whether Pooled Effect or Fixed Effect (FE) is most appropriately used in estimating panel data. What is poolability? Poolability asks if slopes are the same across group or overtime [^1]
+Chow test is a test to determine the model of whether Pooled Effect or Fixed Effect (FE) is most appropriately used in estimating panel data. What is poolability? Poolability asks if slopes are the same across group or overtime [^1]
 
 H0: pooled effect model
 
