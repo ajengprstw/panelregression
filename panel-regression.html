@@ -10,7 +10,7 @@
 
 <meta name="author" content="Ajeng Prastiwi" />
 
-<meta name="date" content="2019-10-23" />
+<meta name="date" content="2019-10-26" />
 
 <title>Regression with Panel Data</title>
 
@@ -1520,7 +1520,7 @@ $(document).ready(function () {
     <div id="text-table-of-contents">
       <ul>
       <li><a href="#advantages-of-panel-data">Advantages of panel data</a></li>
-      <li><a href="#data-structure">Data Structure</a><ul>
+      <li><a href="#structure-of-panel-data-sets">Structure of Panel data sets</a><ul>
       <li><a href="#cross-sectional-data">Cross Sectional Data</a></li>
       <li><a href="#pooled-cross-sectional-data">Pooled Cross Sectional Data</a></li>
       <li><a href="#panel-data">Panel Data</a></li>
@@ -1541,7 +1541,7 @@ $(document).ready(function () {
 </div>
 
 <div id="main">
-<p>Panel data are also called longitudinal data or cross-sectional time-series data. A panel data set has multiple entities, each of which has repeated measurements at different time periods. Panel data may have individual (group) effect, time effect, or both, which are analyzed by fixed effect and/or random effect models.</p>
+<p>Panel data are also called longitudinal data or cross-sectional time-series data. A panel data set has multiple entities, each of which has repeated measurements at different time periods. Panel data may have individual (group) effect, time effect, or both, which are analyzed by fixed effect and/or random effect models. (Park, Hun Myung. 2011. <a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>)</p>
 <p>Panel data examples:</p>
 <ul>
 <li><p>Annual unemployment rates of each state over several years</p></li>
@@ -1552,8 +1552,9 @@ $(document).ready(function () {
 <ul>
 <li><p>Controlling for individual heterogeneity</p></li>
 <li><p>Panel data give more informative data, more variability, less collinearity among the variables, more degress of freedom and more efficiency</p></li>
-<li><p>omitted variable bias</p></li>
+<li><p>omitted variable bias.</p></li>
 </ul>
+<p>(Baltagi, B. H. 2005 <a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>)</p>
 <div id="advantages-of-panel-data" class="section level1">
 <h1>Advantages of panel data</h1>
 <p>Panel data, by blending the inter-individual differences and intra-individual dynamics, have several advantages over cross-sectional or time-series data:</p>
@@ -1562,9 +1563,9 @@ $(document).ready(function () {
 <li><p>The main advantage of panel data comes from its solution to the difficulties involved in interpreting the regression coefficients in the framework of a cross-section only or time series only regeression</p></li>
 </ul>
 </div>
-<div id="data-structure" class="section level1">
-<h1>Data Structure</h1>
-<p>Three types of data: cross section, pooled cross section, and panel. To help you visualize these types of data we’ll consider some sample data sets below.</p>
+<div id="structure-of-panel-data-sets" class="section level1">
+<h1>Structure of Panel data sets</h1>
+<p>Panel data have three types od data, there are cross section, pooled cross section, and panel. To help you visualize these types of data we’ll consider some sample data sets below.</p>
 <p>We use the <code>Grunfeld</code> datasets from <code>AER</code> package. This datasets tell about Grunfeld’s Investment Data on 11 large US manufacturing firms over 20 years, for the years 1935-1954.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">data</span>(<span class="st">&quot;Grunfeld&quot;</span>)</a>
 <a class="sourceLine" id="cb1-2" title="2"><span class="kw">head</span>(Grunfeld)</a></code></pre></div>
@@ -1600,7 +1601,7 @@ $(document).ready(function () {
 </div>
 <div id="pooled-cross-sectional-data" class="section level2">
 <h2>Pooled Cross Sectional Data</h2>
-<p>Pooled cross sectional data is multiple snapshots of multiple bunches of (randomly selected) individuals (or states or firms or whatever) at many points in time.</p>
+<p>Pooled cross sectional data is multiple snapshots of multiple bunches of (randomly selected) individuals (or states or firms or whatever) at many points in time. (Buck, Steven. 2015 <a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a>)</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1">pcs &lt;-<span class="st"> </span>Grunfeld<span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb5-2" title="2"><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>firm)</a>
 <a class="sourceLine" id="cb5-3" title="3"><span class="kw">head</span>(pcs)</a></code></pre></div>
@@ -1716,7 +1717,7 @@ $(document).ready(function () {
 </div>
 <div id="the-fixed-effects-model" class="section level2">
 <h2>The Fixed Effects Model</h2>
-<p>Fixed effect model explore the relationship between predictor and outcome variables within and entity (country, person, company, .etc). Each entity has its own individual characteristics that may or may not influence the predictor variables. When using Fixed Effects Model we assume that something within the individual may impact or bias the predictor or outcome variables and we need to control for this. This is the rationale behind the assumption of the correlation between entity’s error term and predictor variables. Fixed Effect remove the effect of those time-invariant characteristics so we can assess the net effect of the predictors on the outcome variable. [ Oscar Torres Reyna]</p>
+<p>Fixed effect model explore the relationship between predictor and outcome variables within and entity (country, person, company, .etc). Each entity has its own individual characteristics that may or may not influence the predictor variables. When using Fixed Effects Model we assume that something within the individual may impact or bias the predictor or outcome variables and we need to control for this. This is the rationale behind the assumption of the correlation between entity’s error term and predictor variables. Fixed Effect remove the effect of those time-invariant characteristics so we can assess the net effect of the predictors on the outcome variable. (Reyna, Oscar T. 2010 <a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a>)</p>
 <p>The equation for the fixed effects model becomes:</p>
 <p>$ y_{it} = <em>iX</em>{it} + <em>i + u</em>{it} $</p>
 <p>Where:</p>
@@ -1910,7 +1911,7 @@ $(document).ready(function () {
 <ol style="list-style-type: decimal">
 <li>Chow Test for Poolability</li>
 </ol>
-<p>Chow test is a test to determine the model of whether Pooled Effect or Fixed Effect (FE) is most appropriately used in estimating panel data. What is poolability? Poolability asks if slopes are the same across group or overtime [^1]</p>
+<p>Chow test is a test to determine the model of whether Pooled Effect or Fixed Effect (FE) is most appropriately used in estimating panel data. What is poolability? Poolability asks if slopes are the same across group or overtime.</p>
 <p>H0: pooled effect model</p>
 <p>H1: fixed effect model</p>
 <div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" title="1"><span class="kw">pFtest</span>(within,pooling)</a></code></pre></div>
@@ -1962,7 +1963,7 @@ $(document).ready(function () {
 <h2>Diagnostics Test</h2>
 <div id="test-of-serial-correlation" class="section level3">
 <h3>Test of Serial Correlation</h3>
-<p>A genearal testing procedure for serial correlation in Fixed Effects (FE), Random Effects (RE), and pooled Effects models alike can be based on considerations in. (Wooldrige 2002)</p>
+<p>A genearal testing procedure for serial correlation in Fixed Effects (FE), Random Effects (RE), and pooled Effects models alike can be based on considerations in. (Wooldrige, J. F. 2001 <a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a>)</p>
 <p>Recall that <code>plm</code> model objects are the results of OLS estimation performed on <code>demeaned</code> data, where, in the case of individual effects (else symmetric), this means time-demeaning for the Fixed Effect model, quasi-time demaning for the Random Effect model and original data with no demeaning at all, for the Pooled Model.</p>
 <p>H0: There is not serial correlation</p>
 <p>H1: There is serial correlation</p>
@@ -1986,13 +1987,18 @@ $(document).ready(function () {
 ## data:  random
 ## BP = 65.228, df = 2, p-value = 6.854e-15</code></pre>
 <p>Annotation:</p>
-<ul>
-<li><p>Baltagi, Badi H. 2005. Econometric Analysis of Panel Data, 3rd Edition, John Wiley and Sons.</p></li>
-<li><p>Hsiao, Cheng. 2014. Analysis of Panel Data. Third edition. Cambridge University Press, New York.</p></li>
-<li><p>Kennedy, Peter. 2008. A Guide to Econometrics, 6th ed. Malden, MA: Blackwell Publishing</p></li>
-</ul>
 </div>
 </div>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Park, Hun Myoung. 2011. Practical Guides to Panel Data Modeling: A Step by Step Analysis Using Stata.<a href="#fnref1" class="footnote-back">↩</a></p></li>
+<li id="fn2"><p>Baltagi, Badi H. 2005. Econometric Analysis of Panel Data, 3rd Edition, John Wiley and Sons.<a href="#fnref2" class="footnote-back">↩</a></p></li>
+<li id="fn3"><p>Buck, Steven. 2015. Introductory Applied Econometrics.<a href="#fnref3" class="footnote-back">↩</a></p></li>
+<li id="fn4"><p>Reyna, Oscar T. 2010. Getting Started in Fixed/Random Effects Models using R.<a href="#fnref4" class="footnote-back">↩</a></p></li>
+<li id="fn5"><p>Wooldridge, Jeffrey M. 2002.Analysis of Cross Section and Panel Data.<a href="#fnref5" class="footnote-back">↩</a></p></li>
+</ol>
 </div>
 </div>
 
@@ -2001,7 +2007,7 @@ $(document).ready(function () {
 
 <div id="postamble" data-toggle="wy-nav-shift" class="status">
 <p class="author"><span class="glyphicon glyphicon-user"></span> Ajeng Prastiwi</p>
-<p class="date"><span class="glyphicon glyphicon-calendar"></span> 2019-10-23</p>
+<p class="date"><span class="glyphicon glyphicon-calendar"></span> 2019-10-26</p>
 </div>
 
 

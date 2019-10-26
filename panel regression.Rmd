@@ -20,7 +20,7 @@ library(gplots)
 library(lmtest)
 ```
 
-Panel data are also called longitudinal data or cross-sectional time-series data. A panel data set has multiple entities, each of which has repeated measurements at different time periods. Panel data may have individual (group) effect, time effect, or both, which are analyzed by fixed effect and/or random effect models. 
+Panel data are also called longitudinal data or cross-sectional time-series data. A panel data set has multiple entities, each of which has repeated measurements at different time periods. Panel data may have individual (group) effect, time effect, or both, which are analyzed by fixed effect and/or random effect models. (Park, Hun Myung. 2011. [^1])
 
 Panel data examples:
 
@@ -30,14 +30,15 @@ Panel data examples:
 
 - Salary for the same worker, working at several different jobs
 
-Why should we use panel data?
+Why should we use panel data? 
 
 - Controlling for individual heterogeneity
 
 - Panel data give more informative data, more variability, less collinearity among the variables, more degress of freedom and more efficiency
 
-- omitted variable bias 
+- omitted variable bias. 
 
+(Baltagi, B. H. 2005 [^2]) 
 
 # Advantages of panel data
 
@@ -48,9 +49,9 @@ Panel data, by blending the inter-individual differences and intra-individual dy
 - The main advantage of panel data comes from its solution to the difficulties involved in interpreting the regression coefficients in the framework of a cross-section only or time series only regeression
 
 
-# Data Structure
+# Structure of Panel data sets
 
-Three types of data: cross section, pooled cross section, and panel. To help you visualize these types of data we'll consider some sample data sets below.
+Panel data have three types od data, there are cross section, pooled cross section, and panel. To help you visualize these types of data we'll consider some sample data sets below.
 
 We use the `Grunfeld` datasets from `AER` package. This datasets tell about Grunfeld's Investment Data on 11 large US manufacturing firms over 20 years, for the years 1935-1954. 
 
@@ -85,7 +86,7 @@ head(csd)
 
 ## Pooled Cross Sectional Data
 
-Pooled cross sectional data is multiple snapshots of multiple bunches of (randomly selected) individuals (or states or firms or whatever) at many points in time.
+Pooled cross sectional data is multiple snapshots of multiple bunches of (randomly selected) individuals (or states or firms or whatever) at many points in time. (Buck, Steven. 2015 [^3])
 ```{r}
 pcs <- Grunfeld%>% 
   select(-firm)
@@ -163,7 +164,7 @@ summary(pooling)
 
 ## The Fixed Effects Model
 
-Fixed effect model explore the relationship between predictor and outcome variables within and entity (country, person, company, .etc). Each entity has its own individual characteristics that may or may not influence the predictor variables. When using Fixed Effects Model we assume that something within the individual may impact or bias the predictor or outcome variables and we need to control for this. This is the rationale behind the assumption of the correlation between entity's error term and predictor variables. Fixed Effect remove the effect of those time-invariant characteristics so we can assess the net effect of the predictors on the outcome variable. [ Oscar Torres Reyna]
+Fixed effect model explore the relationship between predictor and outcome variables within and entity (country, person, company, .etc). Each entity has its own individual characteristics that may or may not influence the predictor variables. When using Fixed Effects Model we assume that something within the individual may impact or bias the predictor or outcome variables and we need to control for this. This is the rationale behind the assumption of the correlation between entity's error term and predictor variables. Fixed Effect remove the effect of those time-invariant characteristics so we can assess the net effect of the predictors on the outcome variable. (Reyna, Oscar T. 2010 [^4])
 
 The equation for the fixed effects model becomes:
 
@@ -287,7 +288,7 @@ The fixed effect model examines group difference in intercepts, assuming the sam
 
 1. Chow Test for Poolability
 
-Chow test is a test to determine the model of whether Pooled Effect or Fixed Effect (FE) is most appropriately used in estimating panel data. What is poolability? Poolability asks if slopes are the same across group or overtime [^1]
+Chow test is a test to determine the model of whether Pooled Effect or Fixed Effect (FE) is most appropriately used in estimating panel data. What is poolability? Poolability asks if slopes are the same across group or overtime.
 
 H0: pooled effect model
 
@@ -337,7 +338,7 @@ sum(resid(random)^2)
 
 ### Test of Serial Correlation
 
-A genearal testing procedure for serial correlation in Fixed Effects (FE), Random Effects (RE), and pooled Effects models alike can be based on considerations in. (Wooldrige 2002)
+A genearal testing procedure for serial correlation in Fixed Effects (FE), Random Effects (RE), and pooled Effects models alike can be based on considerations in. (Wooldrige, J. F. 2001 [^5])
 
 Recall that `plm` model objects are the results of OLS estimation performed on `demeaned` data, where, in the case of individual effects (else symmetric), this means time-demeaning for the Fixed Effect model, quasi-time demaning for the Random Effect model and original data with no demeaning at all, for the Pooled Model.
 
@@ -358,24 +359,14 @@ bptest(random)
 ```
 
 
-
-
-
-
 Annotation:
 
-- Baltagi, Badi H. 2005. Econometric Analysis of Panel Data, 3rd Edition, John Wiley and Sons.
+[^1]: Park, Hun Myoung. 2011. Practical Guides to Panel Data Modeling: A Step by Step Analysis Using Stata.
 
-- Hsiao, Cheng. 2014. Analysis of Panel Data. Third edition. Cambridge University Press, New York.
+[^2]: Baltagi, Badi H. 2005. Econometric Analysis of Panel Data, 3rd Edition, John Wiley and Sons.
 
-- Kennedy, Peter. 2008. A Guide to Econometrics, 6th ed. Malden, MA: Blackwell Publishing
+[^3]: Buck, Steven. 2015. Introductory Applied Econometrics.
 
+[^4]: Reyna, Oscar T. 2010. Getting Started in Fixed/Random Effects Models using R.
 
-
-
-
-
-
-
-
-
+[^5]: Wooldridge, Jeffrey M. 2002.Analysis of Cross Section and Panel Data.
