@@ -36,15 +36,15 @@ Panel data examples:
 
 - Quarterly sales of individual stores over several quarters
 
-- Salary for the same worker, working at several different jobs
+- Salary for the same worker, working at several different jobs.
 
-Why should we use panel data? [^2]
+Why should we use panel data?
 
 - Controlling for individual heterogeneity
 
 - Panel data give more informative data, more variability, less collinearity among the variables, more degress of freedom and more efficiency
 
-- omitted variable bias. 
+- Omitted variable bias. 
 
 ## Learning Objectives
 
@@ -54,7 +54,7 @@ The goal of this article is to help you:
 
 - Understand structure of panel data sets
 
-- Implement panel regression in business case
+- Implement panel regression in business case.
 
 ## Library and setup
 
@@ -558,8 +558,6 @@ Panel regression is a method that can build model both the common and individual
 
 [^5]: Ludwig, Volker & Bruderl, Josef.2015.Regression Analysis and Causal Inference.
 
-[^6]: Hsiao, Cheng. Panel Data Analysis.
-
-[^7]: Durlauf, Steven N & Blume, Lawrence E. 2008. The New Palgrave Dictionary of Economics.
+[^6]: Durlauf, Steven N & Blume, Lawrence E. 2008. The New Palgrave Dictionary of Economics.
 
 

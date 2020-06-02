@@ -2875,13 +2875,13 @@ text-align: justify}
 <ul>
 <li><p>Annual unemployment rates of each state over several years</p></li>
 <li><p>Quarterly sales of individual stores over several quarters</p></li>
-<li><p>Salary for the same worker, working at several different jobs</p></li>
+<li><p>Salary for the same worker, working at several different jobs.</p></li>
 </ul>
-<p>Why should we use panel data? <a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a></p>
+<p>Why should we use panel data?</p>
 <ul>
 <li><p>Controlling for individual heterogeneity</p></li>
 <li><p>Panel data give more informative data, more variability, less collinearity among the variables, more degress of freedom and more efficiency</p></li>
-<li><p>omitted variable bias.</p></li>
+<li><p>Omitted variable bias.</p></li>
 </ul>
 </div>
 <div id="learning-objectives" class="section level2">
@@ -2890,7 +2890,7 @@ text-align: justify}
 <ul>
 <li><p>Understand the concept of panel regression</p></li>
 <li><p>Understand structure of panel data sets</p></li>
-<li><p>Implement panel regression in business case</p></li>
+<li><p>Implement panel regression in business case.</p></li>
 </ul>
 </div>
 <div id="library-and-setup" class="section level2">
@@ -2901,7 +2901,7 @@ text-align: justify}
 <h1>Advantages of panel data</h1>
 <p>Panel data, by blending the inter-individual differences and intra-individual dynamics, have several advantages over cross-sectional or time-series data:</p>
 <ul>
-<li><p>The obvious benefit is in terms of obtaining a large sample, giving more degrees of freedom, more variability, more information and less multicollinearity among the variables hence improving the efficiency of econometrics estimates <a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a>.</p></li>
+<li><p>The obvious benefit is in terms of obtaining a large sample, giving more degrees of freedom, more variability, more information and less multicollinearity among the variables hence improving the efficiency of econometrics estimates <a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>.</p></li>
 <li><p>Interpretable models, we can interpret the regression coefficients in the framework of a cross-section and time-series effect.</p></li>
 </ul>
 </div>
@@ -2939,7 +2939,7 @@ text-align: justify}
 </div>
 <div id="pooled-cross-sectional-data" class="section level2">
 <h2>Pooled Cross Sectional Data</h2>
-<p>Pooled cross sectional data is multiple snapshots of multiple bunches of (randomly selected) individuals (or states or firms or whatever) at many points in time <a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a>.</p>
+<p>Pooled cross sectional data is multiple snapshots of multiple bunches of (randomly selected) individuals (or states or firms or whatever) at many points in time <a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a>.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1">pcs &lt;-<span class="st"> </span>Grunfeld<span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb3-2" title="2"><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>firm)</a>
 <a class="sourceLine" id="cb3-3" title="3"><span class="kw">head</span>(pcs)</a></code></pre></div>
@@ -3053,7 +3053,7 @@ text-align: justify}
 </div>
 <div id="the-fixed-effects-model" class="section level2">
 <h2>The Fixed Effects Model</h2>
-<p>Fixed effect model explore the relationship between predictor and outcome variables within and entity (country, person, company, .etc). Each entity has its own individual characteristics that may or may not influence the predictor variables. When using Fixed Effects Model we assume that something within the individual may impact or bias the predictor or outcome variables and we need to control for this. This is the rationale behind the assumption of the correlation between entity’s error term and predictor variables. Fixed Effect remove the effect of those time-invariant characteristics so we can assess the net effect of the predictors on the outcome variable<a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a>.</p>
+<p>Fixed effect model explore the relationship between predictor and outcome variables within and entity (country, person, company, .etc). Each entity has its own individual characteristics that may or may not influence the predictor variables. When using Fixed Effects Model we assume that something within the individual may impact or bias the predictor or outcome variables and we need to control for this. This is the rationale behind the assumption of the correlation between entity’s error term and predictor variables. Fixed Effect remove the effect of those time-invariant characteristics so we can assess the net effect of the predictors on the outcome variable<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a>.</p>
 <p>The equation for the fixed effects model becomes:</p>
 <p>$ y_{it} = <em>iX</em>{it} + <em>i + u</em>{it} $</p>
 <p>Where:</p>
@@ -3143,7 +3143,7 @@ text-align: justify}
 ## R-Squared:      0.72527
 ## Adj. R-Squared: 0.67997
 ## F-statistic: 248.15 on 2 and 188 DF, p-value: &lt; 2.22e-16</code></pre>
-<p>The Fixed Effect model assumes an individual-speciﬁc intercept that is non-random, while all other coefficients are fixed (homogeneous across units)<a href="#fn6" class="footnote-ref" id="fnref6"><sup>6</sup></a>. We can get the fixed effects constant for each firm using <code>fixef()</code>. The <code>fixef()</code> function returns an object of class fixef.</p>
+<p>The Fixed Effect model assumes an individual-speciﬁc intercept that is non-random, while all other coefficients are fixed (homogeneous across units)<a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a>. We can get the fixed effects constant for each firm using <code>fixef()</code>. The <code>fixef()</code> function returns an object of class fixef.</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1"><span class="kw">fixef</span>(within)</a></code></pre></div>
 <pre><code>##    General Motors          US Steel  General Electric          Chrysler 
 ##       -125.541145         76.777655       -264.856506        -37.370848 
@@ -3187,7 +3187,7 @@ text-align: justify}
 </div>
 <div id="the-random-effects-model" class="section level2">
 <h2>The Random Effects Model</h2>
-<p>In the random effects model, the individual-specific effect is a random variable that is uncorrelated with the explanatory variables. The advantages of random effects specification are: <a href="#fn7" class="footnote-ref" id="fnref7"><sup>7</sup></a></p>
+<p>In the random effects model, the individual-specific effect is a random variable that is uncorrelated with the explanatory variables. The advantages of random effects specification are: <a href="#fn6" class="footnote-ref" id="fnref6"><sup>6</sup></a></p>
 <ul>
 <li><p>The number of paramaters stay constant when sample size increases</p></li>
 <li><p>It allows the derivation of efficient estimators that make use of both within and between (group) variation.</p></li>
@@ -3627,11 +3627,10 @@ text-align: justify}
 <ol>
 <li id="fn1"><p>Park, Hun Myoung. 2011. Practical Guides to Panel Data Modeling: A Step by Step Analysis Using Stata.<a href="#fnref1" class="footnote-back">↩</a></p></li>
 <li id="fn2"><p>Baltagi, Badi H. 2005. Econometric Analysis of Panel Data, 3rd Edition, John Wiley and Sons.<a href="#fnref2" class="footnote-back">↩</a></p></li>
-<li id="fn3"><p>Baltagi, Badi H. 2005. Econometric Analysis of Panel Data, 3rd Edition, John Wiley and Sons.<a href="#fnref3" class="footnote-back">↩</a></p></li>
-<li id="fn4"><p>Buck, Steven. 2015. Introductory Applied Econometrics.<a href="#fnref4" class="footnote-back">↩</a></p></li>
-<li id="fn5"><p>Reyna, Oscar T. 2010. Getting Started in Fixed/Random Effects Models using R.<a href="#fnref5" class="footnote-back">↩</a></p></li>
-<li id="fn6"><p>Ludwig, Volker &amp; Bruderl, Josef.2015.Regression Analysis and Causal Inference.<a href="#fnref6" class="footnote-back">↩</a></p></li>
-<li id="fn7"><p>Hsiao, Cheng. Panel Data Analysis.<a href="#fnref7" class="footnote-back">↩</a></p></li>
+<li id="fn3"><p>Buck, Steven. 2015. Introductory Applied Econometrics.<a href="#fnref3" class="footnote-back">↩</a></p></li>
+<li id="fn4"><p>Reyna, Oscar T. 2010. Getting Started in Fixed/Random Effects Models using R.<a href="#fnref4" class="footnote-back">↩</a></p></li>
+<li id="fn5"><p>Ludwig, Volker &amp; Bruderl, Josef.2015.Regression Analysis and Causal Inference.<a href="#fnref5" class="footnote-back">↩</a></p></li>
+<li id="fn6"><p>Durlauf, Steven N &amp; Blume, Lawrence E. 2008. The New Palgrave Dictionary of Economics.<a href="#fnref6" class="footnote-back">↩</a></p></li>
 </ol>
 </div>
 
