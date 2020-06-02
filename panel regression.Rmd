@@ -79,7 +79,7 @@ Panel data, by blending the inter-individual differences and intra-individual dy
 
 # Structure of Panel data sets
 
-Panel data have three types od data, there are cross section, pooled cross section, and panel. To help you visualize these types of data we'll consider some sample data sets below.
+Panel data have three types of data, there are cross section, pooled cross section, and panel. To help you visualize these types of data we'll consider some sample data sets below.
 
 We use the `Grunfeld` datasets from `AER` package. This datasets tell about Grunfeld's Investment Data on 11 large US manufacturing firms over 20 years, for the years 1935-1954. 
 
@@ -158,13 +158,14 @@ where:
 The first two components($\mu _i$ and $\lambda _t$) are also called within component and the last $\upsilon _{it}$, panel or between component
 
 
-## Heterogeniety
+## Heterogeneity
 
 We need to make sure that our data is a balanced panel or an unbalanced panel. If we have an unbalanced panel, try to classify individuals or time periods and get some manageable.
 ```{r}
 plotmeans(formula = invest~year, main = "Heterogeineity Across Year", data = Grunfeld)
 ```
 
+From the plot above, we have a balanced panel dataset with 11 observations every year.
 
 # Estimation model of panel regression
 
@@ -228,7 +229,7 @@ summary(lsdv)
 
 ## Within Estimator
 
-The `within` estimation does not need dummy variables, but it uses deviations from group (or time period) means. That is `within` estimation uses variation within each individual or entity instead of a large number of dummies.
+The `within` estimation doesn't need dummy variables, but it uses deviations from group (or time period) means. That is `within` estimation uses variation within each individual or entity instead of a large number of dummies.
 
 The within estimator substracts these unit-level means from the response, treatment, and all the controls:
 
@@ -543,7 +544,7 @@ MAPE(pred, data_test$GSP)
 
 # Conlusion
 
-Panel regression is a method can build model both the common and individual behaviors of groups. The advantage of a panel data set over a cross-section is that it will allow the researcher great flexibility in modeling of differences in behavior across individual. The challenge from implementation panel regression is the assumption of no unobserved heterogeneity.
+Panel regression is a method that can build model both the common and individual behaviors of groups. The advantage of a panel data set over a cross-section is that it will allow the researcher great flexibility in modeling of differences in behavior across individuals. The challenge from implementation panel regression is the assumption of no unobserved heterogeneity.
 
 # Annotation
 
@@ -558,5 +559,7 @@ Panel regression is a method can build model both the common and individual beha
 [^5]: Ludwig, Volker & Bruderl, Josef.2015.Regression Analysis and Causal Inference.
 
 [^6]: Hsiao, Cheng. Panel Data Analysis.
+
+[^7]: Durlauf, Steven N & Blume, Lawrence E. 2008. The New Palgrave Dictionary of Economics.
 
 
